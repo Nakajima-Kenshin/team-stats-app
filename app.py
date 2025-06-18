@@ -10,7 +10,7 @@ mode = st.radio("モードを選んでください", ["閲覧モード", "管理
 # --- 管理者モード処理 ---
 if mode == "管理者モード 🔐":
     password = st.text_input("パスワード", type="password")
-    if password == "secret123":
+    if password == "Squalls_Owner":
         st.success("管理者モードでログイン成功！")
         uploaded_file = st.file_uploader("Excelファイルをアップロード", type=["xlsx"])
         if uploaded_file:
