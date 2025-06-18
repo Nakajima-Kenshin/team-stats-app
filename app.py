@@ -17,7 +17,6 @@ if mode == "管理者モード 🔐":
             df = pd.read_excel(uploaded_file)
         else:
             st.warning("ファイルをアップロードしてください")
-            st.stop()
     else:
         st.error("パスワードが間違っています")
         st.stop()
