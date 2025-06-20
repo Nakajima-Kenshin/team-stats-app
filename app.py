@@ -3,21 +3,33 @@ import pandas as pd
 
 st.set_page_config(page_title="野球チーム成績アプリ", layout="centered")
 
-# ボタンメニュー
+# セッション状態でメニューを管理
+if "menu" not in st.session_state:
+    st.session_state.menu = "ホーム"
+
 st.title("📂 メニューを選択してください")
-menu = st.radio(
-    label="",
-    options=[
-        "🥇 ベスト10",
-        "📊 成績",
-        "📅 試合詳細",
-        "📝 記録",
-        "🏆 タイトル",
-        "🎖️ 表彰",
-        "🔐 管理者モード"
-    ],
-    horizontal=True
-)
+
+# ボタンメニュー（画面上）
+col1, col2, col3 = st.columns(3)
+with col1:
+    if st.button("🥇 ベスト10"):
+        st.session_state.menu = "🥇 ベスト10"
+    if st.button("📅 試合詳細"):
+        st.session_state.menu = "📅 試合詳細"
+with col2:
+    if st.button("📊 成績"):
+        st.session_state.menu = "📊 成績"
+    if st.button("📝 記録"):
+        st.session_state.menu = "📝 記録"
+with col3:
+    if st.button("🏆 タイトル"):
+        st.session_state.menu = "🏆 タイトル"
+    if st.button("🎖️ 表彰"):
+        st.session_state.menu = "🎖️ 表彰"
+
+# 管理者モード（独立配置）
+if st.button("🔐 管理者モード"):
+    st.session_state.menu = "🔐 管理者モード"
 
 # データ読み込みの仮定
 try:
@@ -26,6 +38,8 @@ except:
     df = pd.DataFrame()
 
 # 各メニューの表示処理
+menu = st.session_state.menu
+
 if menu == "🥇 ベスト10":
     st.title("🥇 ベスト10ランキング")
     if not df.empty:
