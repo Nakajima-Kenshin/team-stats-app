@@ -3,18 +3,20 @@ import pandas as pd
 
 st.set_page_config(page_title="野球チーム成績アプリ", layout="centered")
 
-# サイドバーメニュー
-menu = st.sidebar.selectbox(
-    "📂 メニューを選択してください",
-    [
+# ボタンメニュー
+st.title("📂 メニューを選択してください")
+menu = st.radio(
+    label="",
+    options=[
         "🥇 ベスト10",
         "📊 成績",
         "📅 試合詳細",
         "📝 記録",
         "🏆 タイトル",
-        "🎖️ 表復",
+        "🎖️ 表彰",
         "🔐 管理者モード"
-    ]
+    ],
+    horizontal=True
 )
 
 # データ読み込みの仮定
@@ -54,7 +56,7 @@ elif menu == "🏆 タイトル":
     st.title("🏆 年間タイトル")
     st.write("例：首位打者、本塁率王、打点王など")
 
-elif menu == "🎖️ 表復":
+elif menu == "🎖️ 表彰":
     st.title("🎖️ 賞与者リスト")
     st.write("例：MVP、ベストナイン、労力賞など")
 
