@@ -33,7 +33,7 @@ if st.button("🔐 管理者モード"):
 
 # データ読み込みの仮定
 try:
-    df = pd.read_excel("25-dasya.xlsx")
+    df = pd.read_excel("25-dasya.xlsx", header=3)
 except:
     df = pd.DataFrame()
 
