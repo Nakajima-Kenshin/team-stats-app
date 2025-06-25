@@ -80,8 +80,8 @@ else:
 
         elif menu == "個人成績表":
             st.title("📊 個人成績表")
-            if os.path.exists("records.xlsx"):
-                df = pd.read_excel("records.xlsx")
+            if os.path.exists("data/成績表.xlsx"):
+                df = pd.read_excel("data/成績表.xlsx")
                 personal_df = df[df["ユーザー名"] == user]
                 st.dataframe(personal_df, use_container_width=True)
             else:
@@ -89,8 +89,8 @@ else:
 
         elif menu == "TOP10":
             st.title("🏆 成績TOP10")
-            if os.path.exists("records.xlsx"):
-                df = pd.read_excel("records.xlsx")
+            if os.path.exists("data/成績表.xlsx"):
+                df = pd.read_excel("data/成績表.xlsx")
                 st.subheader("打率 TOP10")
                 st.dataframe(df.sort_values(by="打率", ascending=False).head(10), use_container_width=True)
             else:
