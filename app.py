@@ -82,7 +82,7 @@ elif menu == "🔐 管理者モード":
         st.success("管理者としてログインしました")
         uploaded_file = st.file_uploader("Excelファイルをアップロード", type=["xlsx"])
         if uploaded_file:
-            df = pd.read_excel(uploaded_file)
+            df = pd.read_excel(uploaded_file, header=3)
             st.session_state.df = df
             st.success("ファイルを読み込みました")
         else:
