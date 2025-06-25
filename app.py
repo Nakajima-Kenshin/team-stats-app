@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title="野球チーム成績アプリ", layout="centered")
+st.set_page_config(page_title="野球チーム成績アプリ", layout="wide")
 
 # セッション状態でメニューを管理
 if "menu" not in st.session_state:
