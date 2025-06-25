@@ -57,7 +57,7 @@ if menu == "🥇 ベスト10":
 elif menu == "📊 成績":
     st.title("📊 選手個人成績")
     if "df" in st.session_state:
-    	st.dataframe(st.session_state.df)
+        st.dataframe(st.session_state.df)
 
 elif menu == "📅 試合詳細":
     st.title("📅 試合別の成績")
@@ -79,14 +79,14 @@ elif menu == "🔐 管理者モード":
     st.title("🔐 管理者モード")
     password = st.text_input("パスワードを入力", type="password")
     if password == "Squalls":
-    	st.success("管理者としてログインしました")
+        st.success("管理者としてログインしました")
         uploaded_file = st.file_uploader("Excelファイルをアップロード", type=["xlsx"])
         if uploaded_file:
             df = pd.read_excel(uploaded_file)
             st.session_state.df = df
             st.success("ファイルを読み込みました")
         else:
-        	st.stop()
+            st.stop()
     else:
         if password != "":
             st.error("パスワードが違います")
