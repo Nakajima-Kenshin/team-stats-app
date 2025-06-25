@@ -1,92 +1,99 @@
 import streamlit as st
 import pandas as pd
+import datetime
+import os
 
 st.set_page_config(page_title="野球チーム成績アプリ", layout="wide")
 
-# セッション状態でメニューを管理
-if "menu" not in st.session_state:
-    st.session_state.menu = "ホーム"
+# ログイン状態の保持
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+if "role" not in st.session_state:
+    st.session_state.role = None
+if "user_name" not in st.session_state:
+    st.session_state.user_name = ""
 
-st.title("📂 メニューを選択してください")
-
-# ボタンメニュー（画面上）
-col1, col2, col3 = st.columns(3)
-with col1:
-    if st.button("🥇 ベスト10"):
-        st.session_state.menu = "🥇 ベスト10"
-    if st.button("📅 試合詳細"):
-        st.session_state.menu = "📅 試合詳細"
-with col2:
-    if st.button("📊 成績"):
-        st.session_state.menu = "📊 成績"
-    if st.button("📝 記録"):
-        st.session_state.menu = "📝 記録"
-with col3:
-    if st.button("🏆 タイトル"):
-        st.session_state.menu = "🏆 タイトル"
-    if st.button("🎖️ 表彰"):
-        st.session_state.menu = "🎖️ 表彰"
-
-# 管理者モード（独立配置）
-if st.button("🔐 管理者モード"):
-    st.session_state.menu = "🔐 管理者モード"
-
-# データ読み込みの仮定
-try:
-    df = pd.read_excel("25-dasya.xlsx", header=3)
-except:
-    df = pd.DataFrame()
-
-# 各メニューの表示処理
-menu = st.session_state.menu
-
-if menu == "🥇 ベスト10":
-    st.title("🥇 ベスト10ランキング")
-    if not df.empty:
-        st.subheader("打率 TOP10")
-        st.dataframe(df.sort_values(by="打率", ascending=False).head(10))
-
-        st.subheader("打点 TOP10")
-        st.dataframe(df.sort_values(by="打点", ascending=False).head(10))
-
-        st.subheader("本塁打 TOP10")
-        st.dataframe(df.sort_values(by="本塁打", ascending=False).head(10))
+# ユーザー情報CSVの読み込み
+def load_user_credentials():
+    if os.path.exists("users.csv"):
+        return pd.read_csv("users.csv")
     else:
-        st.warning("データが読み込まれていません")
+        return pd.DataFrame(columns=["ユーザー名", "パスワード", "権限"])
 
-elif menu == "📊 成績":
-    st.title("📊 選手個人成績")
-    if "df" in st.session_state:
-        st.dataframe(st.session_state.df)
+users_df = load_user_credentials()
 
-elif menu == "📅 試合詳細":
-    st.title("📅 試合別の成績")
-    st.info("試合データがあれば詳細表示に対応します")
-
-elif menu == "📝 記録":
-    st.title("📝 チーム・個人記録")
-    st.write("例：最多本塁打、連続打撃記録、最多第1打席好打率など")
-
-elif menu == "🏆 タイトル":
-    st.title("🏆 年間タイトル")
-    st.write("例：首位打者、本塁率王、打点王など")
-
-elif menu == "🎖️ 表彰":
-    st.title("🎖️ 賞与者リスト")
-    st.write("例：MVP、ベストナイン、労力賞など")
-
-elif menu == "🔐 管理者モード":
-    st.title("🔐 管理者モード")
-    password = st.text_input("パスワードを入力", type="password")
-    if password == "Squalls":
-        st.success("管理者としてログインしました")
-        uploaded_file = st.file_uploader("Excelファイルをアップロード", type=["xlsx"])
-        if uploaded_file:
-            df = pd.read_excel(uploaded_file, header=3)
-            st.session_state.df = df
-            st.success("ファイルを読み込みました")
+# ログイン画面
+if not st.session_state.logged_in:
+    st.title("🔐 ログイン画面")
+    username = st.text_input("ユーザー名")
+    password = st.text_input("パスワード", type="password")
+    if st.button("ログイン"):
+        user_row = users_df[(users_df["ユーザー名"] == username) & (users_df["パスワード"] == password)]
+        if not user_row.empty:
+            st.session_state.logged_in = True
+            st.session_state.user_name = username
+            st.session_state.role = user_row.iloc[0]["権限"]
+            st.success(f"ようこそ、{username} さん！")
+            st.experimental_rerun()
         else:
-            st.stop()
-    else:
-        if password != "":
-            st.error("パスワードが違います")
+            st.error("ユーザー名またはパスワードが間違っています")
+
+# ログイン後の画面
+else:
+    st.sidebar.title("メニュー")
+    role = st.session_state.role
+    user = st.session_state.user_name
+
+    if role == "admin":
+        menu = st.sidebar.radio("管理者メニュー", ["出欠確認", "ファイルのアップロード"])
+        if menu == "出欠確認":
+            st.title("📅 出欠確認（管理者）")
+            st.write("※ 日程の出欠一覧や次回日程の作成")
+            if os.path.exists("attendance.csv"):
+                att_df = pd.read_csv("attendance.csv")
+                st.dataframe(att_df)
+            else:
+                st.info("まだ出欠記録がありません")
+        elif menu == "ファイルのアップロード":
+            st.title("📤 成績ファイルアップロード")
+            uploaded_file = st.file_uploader("Excelファイルをアップロード", type=["xlsx"])
+            if uploaded_file:
+                with open("records.xlsx", "wb") as f:
+                    f.write(uploaded_file.read())
+                st.success("ファイルを保存しました")
+
+    elif role == "user":
+        menu = st.sidebar.radio("ユーザーメニュー", ["出欠確認", "個人成績表", "TOP10"])
+
+        if menu == "出欠確認":
+            st.title("✅ 出欠確認（ユーザー）")
+            today = datetime.date.today().isoformat()
+            if st.button("出席する"):
+                with open("attendance.csv", "a", encoding="utf-8-sig") as f:
+                    f.write(f"{today},{user},出席\n")
+                st.success("出席を記録しました")
+
+        elif menu == "個人成績表":
+            st.title("📊 個人成績表")
+            if os.path.exists("records.xlsx"):
+                df = pd.read_excel("records.xlsx")
+                personal_df = df[df["ユーザー名"] == user]
+                st.dataframe(personal_df, use_container_width=True)
+            else:
+                st.warning("成績ファイルが見つかりません")
+
+        elif menu == "TOP10":
+            st.title("🏆 成績TOP10")
+            if os.path.exists("records.xlsx"):
+                df = pd.read_excel("records.xlsx")
+                st.subheader("打率 TOP10")
+                st.dataframe(df.sort_values(by="打率", ascending=False).head(10), use_container_width=True)
+            else:
+                st.warning("成績ファイルが見つかりません")
+
+    # ログアウト
+    if st.sidebar.button("ログアウト"):
+        st.session_state.logged_in = False
+        st.session_state.user_name = ""
+        st.session_state.role = None
+        st.experimental_rerun()
