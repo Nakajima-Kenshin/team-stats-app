@@ -54,8 +54,8 @@ else:
         if menu == "出欠確認":
             st.title("📅 出欠確認（管理者）")
             st.write("※ 日程の出欠一覧や次回日程の作成")
-            if os.path.exists("attendance.csv"):
-                att_df = pd.read_csv("attendance.csv")
+            if os.path.exists("data/attendance.csv"):
+                att_df = pd.read_csv("data/attendance.csv")
                 st.dataframe(att_df)
             else:
                 st.info("まだ出欠記録がありません")
@@ -63,7 +63,7 @@ else:
             st.title("📤 成績ファイルアップロード")
             uploaded_file = st.file_uploader("Excelファイルをアップロード", type=["xlsx"])
             if uploaded_file:
-                with open("records.xlsx", "wb") as f:
+                with open("data/成績表.xlsx", "wb") as f:
                     f.write(uploaded_file.read())
                 st.success("ファイルを保存しました")
 
