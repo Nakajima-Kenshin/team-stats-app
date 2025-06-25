@@ -15,8 +15,8 @@ if "user_name" not in st.session_state:
 
 # ユーザー情報CSVの読み込み
 def load_user_credentials():
-    if os.path.exists("users.csv"):
-        return pd.read_csv("users.csv")
+    if os.path.exists("data/users.csv"):
+        return pd.read_csv("data/users.csv")
     else:
         return pd.DataFrame(columns=["ユーザー名", "パスワード", "権限"])
 
