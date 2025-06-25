@@ -28,6 +28,11 @@ if not st.session_state.logged_in:
     username = st.text_input("ユーザー名")
     password = st.text_input("パスワード", type="password")
     if st.button("ログイン"):
+        # 前後の空白を除去して比較
+        users_df["ユーザー名"] = users_df["ユーザー名"].astype(str).str.strip()
+        users_df["パスワード"] = users_df["パスワード"].astype(str).str.strip()
+        username = username.strip()
+        password = password.strip()
         user_row = users_df[(users_df["ユーザー名"] == username) & (users_df["パスワード"] == password)]
         if not user_row.empty:
             st.session_state.logged_in = True
