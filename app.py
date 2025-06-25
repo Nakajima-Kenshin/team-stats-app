@@ -39,7 +39,7 @@ if not st.session_state.logged_in:
             st.session_state.user_name = username
             st.session_state.role = user_row.iloc[0]["権限"]
             st.success(f"ようこそ、{username} さん！")
-            st.rerun()
+            st.return()
         else:
             st.error("ユーザー名またはパスワードが間違っています")
 
