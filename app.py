@@ -76,7 +76,7 @@ else:
             if st.button("出席する"):
                 with open("data/attendance.csv", "a", encoding="utf-8-sig") as f:
                     f.write(f"{today},{user},出席\n")
-                st.success("出席を記録しました")s
+                st.success("出席を記録しました")
 
         elif menu == "個人成績表":
             st.title("📊 個人成績表")
