@@ -74,7 +74,7 @@ else:
             st.title("✅ 出欠確認（ユーザー）")
             today = datetime.date.today().isoformat()
             if st.button("出席する"):
-                with open("attendance.csv", "a", encoding="utf-8-sig") as f:
+                with open("data/attendance.csv", "a", encoding="utf-8-sig") as f:
                     f.write(f"{today},{user},出席\n")
                 st.success("出席を記録しました")
 
@@ -82,7 +82,7 @@ else:
             st.title("📊 個人成績表")
             if os.path.exists("data/成績表.xlsx"):
                 df = pd.read_excel("data/成績表.xlsx")
-                personal_df = df[df["ユーザー名"] == user]
+                personal_df = df[df["名前"] == user]
                 st.dataframe(personal_df, use_container_width=True)
             else:
                 st.warning("成績ファイルが見つかりません")
