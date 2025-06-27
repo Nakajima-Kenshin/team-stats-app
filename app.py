@@ -82,7 +82,7 @@ else:
             st.title("📊 個人成績表")
             if os.path.exists("data/成績表.xlsx"):
                 df = pd.read_excel("data/成績表.xlsx")
-                personal_df = df[df["名前"].str.strip() == user]
+                personal_df = df[df["名前"].astype(str).str.strip() == user]
                 st.dataframe(personal_df, use_container_width=True)
             else:
                 st.warning("成績ファイルが見つかりません")
