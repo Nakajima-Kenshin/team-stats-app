@@ -84,7 +84,7 @@ else:
                 df = pd.read_excel("data/成績表.xlsx", header = 3)
                 st.write(df['名前'].astype(str).str.strip().replace(' ',''))
                 st.write(user)
-                personal_df = df[df['名前'].astype(str).str.strip().replace(' ','') == user]
+                personal_df = df[df['名前'].astype(str).str.replace(r'[ 　]', '', regex=True) == user]
                 st.dataframe(personal_df, use_container_width=True)
             else:
                 st.warning("成績ファイルが見つかりません")
