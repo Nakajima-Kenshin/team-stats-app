@@ -76,15 +76,13 @@ else:
             if st.button("出席する"):
                 with open("data/attendance.csv", "a", encoding="utf-8-sig") as f:
                     f.write(f"{today},{user},出席\n")
-                st.success("出席を記録しました")
+                st.success("出席を記録しました")s
 
         elif menu == "個人成績表":
             st.title("📊 個人成績表")
             if os.path.exists("data/成績表.xlsx"):
                 df = pd.read_excel("data/成績表.xlsx")
-                st.write("全ユーザー名一覧", df["名前"].unique().tolist())
-                st.write("ログイン名", login_name)
-                personal_df = df[df["名前"].astype(str).str.strip() == user]
+                personal_df = df[df["名前"].replace(' ','') == user]
                 st.dataframe(personal_df, use_container_width=True)
             else:
                 st.warning("成績ファイルが見つかりません")
