@@ -82,8 +82,6 @@ else:
             st.title("📊 個人成績表")
             if os.path.exists("data/成績表.xlsx"):
                 df = pd.read_excel("data/成績表.xlsx", header = 3)
-                st.write(df['名前'].astype(str).str.strip().replace(' ',''))
-                st.write(user)
                 personal_df = df[df['名前'].astype(str).str.replace(r'[ 　]', '', regex=True) == user]
                 st.dataframe(personal_df, use_container_width=True)
             else:
