@@ -81,7 +81,7 @@ else:
         elif menu == "個人成績表":
             st.title("📊 個人成績表")
             if os.path.exists("data/成績表.xlsx"):
-                df = pd.read_excel("data/成績表.xlsx")
+                df = pd.read_excel("data/成績表.xlsx", header = 3)
                 st.write("列名一覧：", df.columns.tolist())
                 personal_df = df[df['名前'].replace(' ','') == user]
                 st.dataframe(personal_df, use_container_width=True)
