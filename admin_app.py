@@ -14,8 +14,8 @@ if "user_name" not in st.session_state or st.session_state.role != "admin":
 menu = st.selectbox("メニュー選択", ["出欠確認", "成績ファイルのアップロード"])
 
 if menu == "出欠確認":
-    if os.path.exists("attendance.csv"):
-        df = pd.read_csv("attendance.csv")
+    if os.path.exists("data/attendance.csv"):
+        df = pd.read_csv("data/attendance.csv")
         st.dataframe(df)
     else:
         st.info("出欠記録がありません")
@@ -23,7 +23,7 @@ if menu == "出欠確認":
 elif menu == "成績ファイルのアップロード":
     uploaded_file = st.file_uploader("Excelファイルをアップロード", type=["xlsx"])
     if uploaded_file:
-        with open("records.xlsx", "wb") as f:
+        with open("data/成績表.xlsx", "wb") as f:
             f.write(uploaded_file.read())
         st.success("ファイルを保存しました")
 

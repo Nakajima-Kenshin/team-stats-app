@@ -11,8 +11,8 @@ if "role" not in st.session_state:
 
 # ユーザー情報の読み込み
 def load_users():
-    if os.path.exists("users.csv"):
-        df = pd.read_csv("users.csv")
+    if os.path.exists("data/users.csv"):
+        df = pd.read_csv("data/users.csv")
         df["ユーザー名"] = df["ユーザー名"].astype(str).str.strip()
         df["パスワード"] = df["パスワード"].astype(str).str.strip()
         return df

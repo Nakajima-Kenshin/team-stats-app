@@ -23,8 +23,8 @@ if menu == "出欠登録":
         st.success("出席を記録しました")
 
 elif menu == "個人成績":
-    if os.path.exists("records.xlsx"):
-        df = pd.read_excel("records.xlsx")
+    if os.path.exists("data/成績表.xlsx"):
+        df = pd.read_excel("data/成績表.xlsx")
         df["名前"] = df["名前"].astype(str).str.replace(r"[ 　]", "", regex=True)
         user_name_cleaned = user.replace(" ", "").replace("　", "")
         st.subheader("📋 個人成績（名前列固定）")
@@ -38,8 +38,8 @@ elif menu == "個人成績":
         st.warning("成績ファイルが見つかりません")
 
 elif menu == "TOP10":
-    if os.path.exists("records.xlsx"):
-        df = pd.read_excel("records.xlsx")
+    if os.path.exists("data/成績表.xlsx"):
+        df = pd.read_excel("data/成績表.xlsx")
         st.subheader("打率 TOP10（名前列固定）")
         top10_df = df.sort_values(by="打率", ascending=False).head(10)
         gb = GridOptionsBuilder.from_dataframe(top10_df)
