@@ -32,8 +32,8 @@ if st.button("ログイン"):
         st.session_state.user_name = username
         st.session_state.role = user_row.iloc[0]["権限"]
         if st.session_state.role == "admin":
-            st.switch_page("pages/admin_app")
+            st.switch_page("pages/admin_app.py")
         else:
-            st.switch_page("pages/user_app")
+            st.switch_page("pages/user_app.py")
     else:
         st.error("ユーザー名またはパスワードが間違っています")
