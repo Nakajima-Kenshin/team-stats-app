@@ -1,5 +1,5 @@
-import streamlit as st
 import pandas as pd
+import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder
 import datetime
 import os
@@ -9,7 +9,7 @@ st.set_page_config(page_title="野球チーム成績アプリ", layout="wide")
 # ログイン状態の保持
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
-if "role" not in st.session_state:
+if "role" not in st.session_state:where 
     st.session_state.role = None
 if "user_name" not in st.session_state:
     st.session_state.user_name = ""
