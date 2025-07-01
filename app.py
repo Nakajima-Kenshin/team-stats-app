@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from st_aggrid import AgGrid, GridOptionsBuilder
 import datetime
 import os
 
@@ -82,6 +83,17 @@ else:
             st.title("📊 個人成績表")
             if os.path.exists("data/成績表.xlsx"):
                 df = pd.read_excel("data/成績表.xlsx", header = 3)
+                # Gridオプション構築
+                gb = GridOptionsBuilder.from_dataframe(df)
+                gb.configure_default_column(resizable = True, filter = True, sortable = True)
+                
+                # 氏名列固定
+                gb.configure_column("名前", pinned = 'left')
+                
+                # Grid表示
+                gridOptions = gb.build()
+                AgGrid(df, gridOptions=gridOptions, fit_columns_on_grid_load=True)
+                
                 personal_df = df[df['名前'].astype(str).str.replace(r'[ 　]', '', regex=True) == user]
                 st.dataframe(personal_df, use_container_width=True)
             else:
