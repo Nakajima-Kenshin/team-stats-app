@@ -1,4 +1,4 @@
-streamlit=1.35.0
-streamlit-aggrid=0.3.4
-pandas=2.0.0
-openpyxl=3.1.2  # Excelファイル読み込み用
+streamlit>=1.25
+pandas>=1.5
+openpyxl>=3.1
+streamlit-aggrid>=0.3.4
