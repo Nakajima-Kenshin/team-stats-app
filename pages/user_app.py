@@ -25,15 +25,13 @@ if menu == "出欠登録":
 elif menu == "個人成績":
     if os.path.exists("data/成績表.xlsx"):
         df = pd.read_excel("data/成績表.xlsx", header = 3)
-        df["名前"] = df["名前"].astype(str).str.replace(r"[ 　]", "", regex=True)
-        user_name_cleaned = user.replace(" ", "").replace("　", "")
+        personal_df = df[df['名前'].astype(str).str.replace(r'[ 　]', '', regex=True) == user]
         st.subheader("📋 個人成績（名前列固定）")
-        filtered_df = df[df["名前"] == user_name_cleaned]
-        gb = GridOptionsBuilder.from_dataframe(filtered_df)
+        gb = GridOptionsBuilder.from_dataframe(personal_df)
         gb.configure_column("名前", pinned="left")
         gb.configure_default_column(resizable=True)
         grid_options = gb.build()
-        AgGrid(filtered_df, gridOptions=grid_options, height=300, fit_columns_on_grid_load=True)
+        AgGrid(personal_df, gridOptions=grid_options, height=300, fit_columns_on_grid_load=True)
     else:
         st.warning("成績ファイルが見つかりません")
 
